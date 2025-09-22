@@ -1,0 +1,106 @@
+version: '3.8'
+
+services:
+  # Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: noracond-postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME:-noracond_db}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    networks:
+      - noracond-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Backend API
+  api:
+    build:
+      context: .
+      dockerfile: NoraCOND.API/Dockerfile
+    container_name: noracond-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=${DB_NAME:-noracond_db}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER:-NoraCOND.API}
+      - JWT_AUDIENCE=${JWT_AUDIENCE:-NoraCOND.Client}
+      - JWT_EXPIRATION_MINUTES=${JWT_EXPIRATION_MINUTES:-60}
+      - FILE_UPLOAD_PATH=/app/uploads
+    ports:
+      - "5000:5000"
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - noracond-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend
+  frontend:
+    build:
+      context: ./noracond-frontend
+      dockerfile: Dockerfile
+    container_name: noracond-frontend
+    ports:
+      - "80:80"
+    networks:
+      - noracond-network
+    depends_on:
+      - api
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Redis (para cache futuro)
+  redis:
+    image: redis:7-alpine
+    container_name: noracond-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - noracond-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  postgres_data:
+    driver: local
+  uploads_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  noracond-network:
+    driver: bridge

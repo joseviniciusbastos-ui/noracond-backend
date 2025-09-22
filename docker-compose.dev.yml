@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # Banco de Dados PostgreSQL para Desenvolvimento
+  postgres-dev:
+    image: postgres:16-alpine
+    container_name: noracond-postgres-dev
+    environment:
+      POSTGRES_DB: ${DB_NAME:-noracond_db_dev}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_dev_data:/var/lib/postgresql/data
+    networks:
+      - noracond-dev-network
+    restart: unless-stopped
+
+  # Redis para Desenvolvimento
+  redis-dev:
+    image: redis:7-alpine
+    container_name: noracond-redis-dev
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_dev_data:/data
+    networks:
+      - noracond-dev-network
+    restart: unless-stopped
+
+  # PgAdmin para gerenciamento do banco
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: noracond-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@noracond.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+    networks:
+      - noracond-dev-network
+    depends_on:
+      - postgres-dev
+    restart: unless-stopped
+
+volumes:
+  postgres_dev_data:
+    driver: local
+  redis_dev_data:
+    driver: local
+  pgadmin_data:
+    driver: local
+
+networks:
+  noracond-dev-network:
+    driver: bridge
