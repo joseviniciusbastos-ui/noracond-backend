@@ -48,25 +48,17 @@ namespace NoraCOND.Infrastructure.Authentication
             var usuario = await _usuarioRepository.GetUserByEmailAsync(email);
             if (usuario == null)
             {
-                Console.WriteLine($"DEBUG: Usuário não encontrado para email: {email}");
                 throw new UnauthorizedAccessException("Email ou senha inválidos");
             }
-
-            Console.WriteLine($"DEBUG: Usuário encontrado - ID: {usuario.Id}, Email: {usuario.Email}");
-            Console.WriteLine($"DEBUG: Senha fornecida: {senha}");
-            Console.WriteLine($"DEBUG: Hash armazenado: {usuario.SenhaHash}");
 
             // Verificar senha
             var senhaValida = BCrypt.Net.BCrypt.Verify(senha, usuario.SenhaHash);
-            Console.WriteLine($"DEBUG: Resultado da verificação de senha: {senhaValida}");
             
             if (!senhaValida)
             {
-                Console.WriteLine("DEBUG: Senha inválida - falha na verificação BCrypt");
                 throw new UnauthorizedAccessException("Email ou senha inválidos");
             }
 
-            Console.WriteLine("DEBUG: Login bem-sucedido, gerando token JWT");
             // Gerar token JWT
             return _jwtTokenGenerator.GenerateToken(usuario.Id, usuario.Email, usuario.Role);
         }

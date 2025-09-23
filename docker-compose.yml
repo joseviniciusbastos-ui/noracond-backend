@@ -2,26 +2,18 @@ version: '3.8'
 
 services:
   # Banco de Dados PostgreSQL
-  postgres:
-    image: postgres:16-alpine
+  db:
+    image: postgres:14-alpine
     container_name: noracond-postgres
+    restart: always
     environment:
-      POSTGRES_DB: ${DB_NAME:-noracond_db}
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init-scripts:/docker-entrypoint-initdb.d
-    networks:
-      - noracond-network
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME:-postgres}"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
 
   # Backend API
   api:
@@ -32,7 +24,7 @@ services:
     env_file:
       - ./NoraCOND.API/.env.production
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=db
       - DB_PORT=5432
     ports:
       - "5000:8080"
@@ -41,8 +33,8 @@ services:
     networks:
       - noracond-network
     depends_on:
-      postgres:
-        condition: service_healthy
+      db:
+        condition: service_started
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
