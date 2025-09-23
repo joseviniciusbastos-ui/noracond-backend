@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Download, Trash2, FileText, Image, File, AlertCircle } from 'lucide-react';
+import { Download, Trash2, FileText, Image, File } from 'lucide-react';
 import { Document } from '../../services/documentService';
 import { formatDate } from '../../utils/dateUtils';
 import { ConfirmationModal } from '../common/ConfirmationModal';
@@ -170,13 +170,12 @@ export const DocumentList: React.FC<DocumentListProps> = ({
       <ConfirmationModal
         isOpen={deleteModalOpen}
         onConfirm={handleConfirmDelete}
-        onCancel={handleCancelDelete}
+        onClose={handleCancelDelete}
         title="Excluir Documento"
         message={`Tem certeza que deseja excluir o documento "${documentToDelete?.nomeArquivo}"? Esta ação não pode ser desfeita.`}
         confirmText="Excluir"
         cancelText="Cancelar"
         type="danger"
-        icon={<AlertCircle className="h-6 w-6 text-red-600" />}
       />
     </>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Plus, Search, Filter, Download } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import { Process, ProcessFormData, ProcessesFilters, ProcessStatus } from '../types/process';
 import { processService } from '../services/processService';
 import { ProcessesTable } from '../components/processes/ProcessesTable';
@@ -68,10 +68,10 @@ export const ProcessesPage: React.FC = () => {
     setFilters(prev => ({ ...prev, searchTerm, page: 1 }));
   };
 
-  const handleFiltersChange = (newFilters: ProcessFilters) => {
+  const handleFiltersChange = (newFilters: Partial<ProcessesFilters>) => {
     setFilters(prev => ({
       ...prev,
-      status: newFilters.status,
+      ...newFilters,
       page: 1 // Reset page when filters change
     }));
   };
@@ -252,7 +252,7 @@ export const ProcessesPage: React.FC = () => {
 
       {/* Filtros e Busca */}
       <ProcessFilters
-        filters={{ status: filters.status }}
+        filters={filters}
         onFiltersChange={handleFiltersChange}
         onSearch={handleSearchChange}
         searchTerm={filters.searchTerm}

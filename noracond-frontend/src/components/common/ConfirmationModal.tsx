@@ -10,6 +10,7 @@ interface ConfirmationModalProps {
   confirmText?: string;
   cancelText?: string;
   type?: 'danger' | 'warning' | 'info';
+  loading?: boolean;
 }
 
 export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
@@ -20,7 +21,8 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   message,
   confirmText = 'Confirmar',
   cancelText = 'Cancelar',
-  type = 'danger'
+  type = 'danger',
+  loading = false
 }) => {
   if (!isOpen) return null;
 
@@ -72,8 +74,9 @@ export const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
               type="button"
               className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm ${getButtonStyles()}`}
               onClick={onConfirm}
+              disabled={loading}
             >
-              {confirmText}
+              {loading ? 'Carregando...' : confirmText}
             </button>
             <button
               type="button"

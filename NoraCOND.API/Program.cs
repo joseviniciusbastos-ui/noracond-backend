@@ -37,7 +37,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // JWT Configuration
 var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["Secret"];
+var secretKey = jwtSettings["Secret"] ?? throw new InvalidOperationException("JWT Secret não configurado");
 var key = Encoding.ASCII.GetBytes(secretKey);
 
 builder.Services.AddAuthentication(options =>
@@ -103,5 +103,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Aplica as migrações do Entity Framework automaticamente ao iniciar
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<NoraCOND.Infrastructure.Data.AppDbContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();

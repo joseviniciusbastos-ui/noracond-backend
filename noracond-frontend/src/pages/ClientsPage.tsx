@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { PlusCircle, Search, Filter, AlertCircle, Trash2 } from 'lucide-react';
+import { PlusCircle, Search, AlertCircle, Trash2 } from 'lucide-react';
 import ClientsTable from '../components/clients/ClientsTable';
 import ClientModal from '../components/clients/ClientModal';
 import { Pagination } from '../components/common/Pagination';

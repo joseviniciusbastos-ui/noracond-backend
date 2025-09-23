@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Edit, Trash2, Eye } from 'lucide-react';
-import { Process, ProcessStatusColors } from '../../types/process';
+import { Process } from '../../types/process';
 import StatusBadge from '../common/StatusBadge';
 import { formatDate } from '../../utils/dateUtils';
 

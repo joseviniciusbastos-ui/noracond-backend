@@ -1,13 +1,13 @@
 import React from 'react';
-import { ProcessStatusColors } from '../../types/process';
+import { ProcessStatusColors, ProcessStatusType } from '../../types/process';
 
 interface StatusBadgeProps {
-  status: string;
+  status: ProcessStatusType | string;
   className?: string;
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className = '' }) => {
-  const colorClasses = ProcessStatusColors[status];
+  const colorClasses = ProcessStatusColors[status as ProcessStatusType] || 'bg-gray-100 text-gray-800';
 
   return (
     <span

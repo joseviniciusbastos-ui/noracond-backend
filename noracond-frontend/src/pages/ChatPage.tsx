@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ContactResponse, MessageResponse, ChatState } from '../types/chat';
+import { ContactResponse, ChatState } from '../types/chat';
 import { ChatService } from '../services/chatService';
 import ContactList from '../components/chat/ContactList';
 import ConversationPanel from '../components/chat/ConversationPanel';
@@ -226,9 +226,9 @@ const ChatPage: React.FC = () => {
             <h1 className="text-lg font-semibold text-gray-900">Chat Interno</h1>
             <div className="flex items-center space-x-2">
               {isOnline ? (
-                <Wifi className="w-4 h-4 text-green-500" title="Online" />
+                <Wifi className="w-4 h-4 text-green-500" />
               ) : (
-                <WifiOff className="w-4 h-4 text-red-500" title="Offline" />
+                <WifiOff className="w-4 h-4 text-red-500" />
               )}
             </div>
           </div>

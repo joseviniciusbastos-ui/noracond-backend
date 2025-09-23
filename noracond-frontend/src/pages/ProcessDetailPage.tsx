@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Plus, FileText, Calendar, User, Building, AlertCircle } from 'lucide-react';
-import { Process } from '../types/process';
+import { Process, ProcessStatusType } from '../types/process';
 import { Document } from '../services/documentService';
 import { processService } from '../services/processService';
 import { documentService } from '../services/documentService';
@@ -87,14 +87,14 @@ export const ProcessDetailPage: React.FC = () => {
       
       // Criar URL temporária para download
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = window.document.createElement('a');
       link.href = url;
       link.download = document.nomeArquivo;
-      document.body.appendChild(link);
+      window.document.body.appendChild(link);
       link.click();
       
       // Limpar recursos
-      document.body.removeChild(link);
+      window.document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
       
       toast.success('Download iniciado');
@@ -187,7 +187,7 @@ export const ProcessDetailPage: React.FC = () => {
               </h1>
               <p className="text-gray-600 mt-1">{process.titulo}</p>
             </div>
-            <StatusBadge status={process.status} />
+            <StatusBadge status={process.status as ProcessStatusType} />
           </div>
         </div>
 

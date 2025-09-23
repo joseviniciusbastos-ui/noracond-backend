@@ -33,12 +33,12 @@ export const ClientCombobox: React.FC<ClientComboboxProps> = ({
       try {
         setLoading(true);
         const response = await clientService.getClients({ page: 1, pageSize: 100 });
-        setClients(response.data);
-        setFilteredClients(response.data);
+        setClients(response.clients);
+        setFilteredClients(response.clients);
         
         // Se há um valor selecionado, encontrar o cliente correspondente
         if (value) {
-          const client = response.data.find(c => c.id === value);
+          const client = response.clients.find(c => c.id === value);
           setSelectedClient(client || null);
         }
       } catch (error) {
@@ -57,7 +57,7 @@ export const ClientCombobox: React.FC<ClientComboboxProps> = ({
       setFilteredClients(clients);
     } else {
       const filtered = clients.filter((client) =>
-        client.nome.toLowerCase().includes(query.toLowerCase()) ||
+        client.nomeCompleto.toLowerCase().includes(query.toLowerCase()) ||
         client.cpfCnpj.includes(query) ||
         client.email.toLowerCase().includes(query.toLowerCase())
       );
@@ -72,7 +72,7 @@ export const ClientCombobox: React.FC<ClientComboboxProps> = ({
 
   const displayValue = (client: Client | null) => {
     if (!client) return '';
-    return `${client.nome} - ${client.cpfCnpj}`;
+    return `${client.nomeCompleto} - ${client.cpfCnpj}`;
   };
 
   return (
@@ -130,7 +130,7 @@ export const ClientCombobox: React.FC<ClientComboboxProps> = ({
                           }`}
                         >
                           <div className="flex flex-col">
-                            <span className="font-medium">{client.nome}</span>
+                            <span className="font-medium">{client.nomeCompleto}</span>
                             <span className="text-sm text-gray-500">
                               {client.cpfCnpj} • {client.email}
                             </span>

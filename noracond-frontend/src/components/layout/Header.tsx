@@ -13,7 +13,7 @@ const Header: React.FC = () => {
 
   // Por enquanto, vamos usar um nome mockado
   // Futuramente, isso virá do contexto de autenticação ou do token JWT
-  const userName = authService.getUser()?.name || 'Usuário';
+  const userName = authService.getUser()?.nome || 'Usuário';
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 h-16 fixed top-0 right-0 left-64 z-20">

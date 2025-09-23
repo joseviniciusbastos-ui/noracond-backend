@@ -11,8 +11,7 @@ interface UploadModalProps {
 export const UploadModal: React.FC<UploadModalProps> = ({
   isOpen,
   onClose,
-  onUpload,
-  processId
+  onUpload
 }) => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [description, setDescription] = useState('');

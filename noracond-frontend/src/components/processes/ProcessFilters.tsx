@@ -1,10 +1,10 @@
 import React from 'react';
 import { Search, Filter } from 'lucide-react';
-import { ProcessStatus, ProcessFilters as IProcessFilters } from '../../types/process';
+import { ProcessStatus, ProcessStatusType, ProcessesFilters } from '../../types/process';
 
 interface ProcessFiltersProps {
-  filters: IProcessFilters;
-  onFiltersChange: (filters: IProcessFilters) => void;
+  filters: Partial<ProcessesFilters>;
+  onFiltersChange: (filters: Partial<ProcessesFilters>) => void;
   onSearch: (searchTerm: string) => void;
   searchTerm: string;
 }
@@ -15,17 +15,16 @@ const ProcessFilters: React.FC<ProcessFiltersProps> = ({
   onSearch,
   searchTerm
 }) => {
-  const statusOptions: { value: ProcessStatus | 'all'; label: string }[] = [
+  const statusOptions: { value: ProcessStatusType | 'all'; label: string }[] = [
     { value: 'all', label: 'Todos os Status' },
-    { value: 'Em Andamento', label: 'Em Andamento' },
-    { value: 'Suspenso', label: 'Suspenso' },
-    { value: 'Arquivado', label: 'Arquivado' },
-    { value: 'Finalizado', label: 'Finalizado' }
+    { value: ProcessStatus.EM_ANDAMENTO, label: 'Em Andamento' },
+    { value: ProcessStatus.SUSPENSO, label: 'Suspenso' },
+    { value: ProcessStatus.ARQUIVADO, label: 'Arquivado' },
+    { value: ProcessStatus.FINALIZADO, label: 'Finalizado' }
   ];
 
-  const handleStatusChange = (status: ProcessStatus | 'all') => {
+  const handleStatusChange = (status: ProcessStatusType | 'all') => {
     onFiltersChange({
-      ...filters,
       status: status === 'all' ? undefined : status
     });
   };
@@ -57,7 +56,7 @@ const ProcessFilters: React.FC<ProcessFiltersProps> = ({
             </div>
             <select
               value={filters.status || 'all'}
-              onChange={(e) => handleStatusChange(e.target.value as ProcessStatus | 'all')}
+              onChange={(e) => handleStatusChange(e.target.value as ProcessStatusType | 'all')}
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             >
               {statusOptions.map((option) => (
