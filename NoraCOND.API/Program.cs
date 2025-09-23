@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.Services;
-using NoraCOND.Application.Services.Interfaces;
-using NoraCOND.Domain.Repositories;
+using NoraCOND.Domain.Interfaces;
 using NoraCOND.Infrastructure.Data;
 using NoraCOND.Infrastructure.Repositories;
 
@@ -22,7 +22,7 @@ builder.Configuration
 
 // --- Adicionar serviços ao contêiner ---
 
-// Configuração do DbContext com a Connection String do appsettings.json
+// Configuração do DbContext com a Connection String
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
