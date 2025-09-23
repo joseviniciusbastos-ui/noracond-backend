@@ -8,6 +8,7 @@
 *.crt
 *.pem
 appsettings.Production.json
+appsettings.Development.json
 
 ## .NET
 bin/
