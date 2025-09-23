@@ -4,10 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NoraCOND.Application.Interfaces;
-using NoraCOND.Application.Services;
-using NoraCOND.Domain.Interfaces;
 using NoraCOND.Infrastructure.Data;
 using NoraCOND.Infrastructure.Repositories;
+using NoraCOND.Infrastructure.Authentication;
+using NoraCOND.Application.Clientes.Services;
+using NoraCOND.Application.Processos.Services;
+using NoraCOND.Application.Lancamentos.Services;
+using NoraCOND.Application.Documentos.Services;
+using NoraCOND.Application.Chat.Services;
+using NoraCOND.Application.Dashboard.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

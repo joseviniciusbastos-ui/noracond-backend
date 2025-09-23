@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using NoraCOND.Application.Documentos.DTOs;
 
-namespace NoraCOND.Application.Documentos.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface IDocumentoService
     {

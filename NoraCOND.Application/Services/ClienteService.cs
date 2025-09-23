@@ -1,5 +1,5 @@
 using NoraCOND.Application.Clientes.DTOs;
-using NoraCOND.Application.Clientes.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.Clientes.Services;
 using NoraCOND.Domain.Entities;
 
@@ -95,7 +95,7 @@ namespace NoraCOND.Application.Clientes.Services
             // Buscar cliente com relacionamentos para retorno
             var clienteCompleto = await _clienteRepository.GetByIdAsync(clienteAtualizado.Id);
 
-            return MapearParaResponse(clienteCompleto!);
+            return clienteCompleto != null ? MapearParaResponse(clienteCompleto) : null;
         }
 
         public async Task<bool> ExcluirClienteAsync(Guid id)

@@ -1,5 +1,5 @@
 using NoraCOND.Application.Chat.DTOs;
-using NoraCOND.Application.Chat.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Domain.Entities;
 
 namespace NoraCOND.Application.Chat.Services;

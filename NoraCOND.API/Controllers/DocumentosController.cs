@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NoraCOND.Application.Documentos.Interfaces;
+using NoraCOND.Application.Interfaces;
 
 namespace NoraCOND.API.Controllers
 {

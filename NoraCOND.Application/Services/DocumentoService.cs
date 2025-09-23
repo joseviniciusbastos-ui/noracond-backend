@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using NoraCOND.Application.Documentos.DTOs;
-using NoraCOND.Application.Documentos.Interfaces;
-using NoraCOND.Application.Processos.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Domain.Entities;
 
 namespace NoraCOND.Application.Documentos.Services

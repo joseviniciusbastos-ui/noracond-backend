@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using NoraCOND.Application.Authentication;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.DTOs;
 using System;
 using System.Threading.Tasks;

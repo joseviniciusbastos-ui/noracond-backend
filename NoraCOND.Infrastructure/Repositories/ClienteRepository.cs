@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using NoraCOND.Application.Clientes.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Domain.Entities;
 using NoraCOND.Infrastructure.Data;
 

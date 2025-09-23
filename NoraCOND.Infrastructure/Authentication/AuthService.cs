@@ -1,9 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using BCrypt.Net;
-using NoraCOND.Application.Authentication;
-using NoraCOND.Application.Common.Interfaces;
-using NoraCOND.Application.Usuarios.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Domain.Entities;
 
 namespace NoraCOND.Infrastructure.Authentication

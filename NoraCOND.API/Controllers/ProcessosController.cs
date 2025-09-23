@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoraCOND.Application.Processos.DTOs;
-using NoraCOND.Application.Processos.Services;
+using NoraCOND.Application.Interfaces;
 using System.Security.Claims;
 
 namespace NoraCOND.API.Controllers

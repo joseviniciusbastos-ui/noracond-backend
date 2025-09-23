@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoraCOND.Application.Lancamentos.DTOs;
-using NoraCOND.Application.Lancamentos.Services;
+using NoraCOND.Application.Interfaces;
 
 namespace NoraCOND.API.Controllers
 {

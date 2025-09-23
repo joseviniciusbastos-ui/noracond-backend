@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using NoraCOND.Domain.Entities;
 
-namespace NoraCOND.Application.Usuarios.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface IUsuarioRepository
     {

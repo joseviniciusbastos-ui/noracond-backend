@@ -1,6 +1,6 @@
 using NoraCOND.Application.Dashboard.DTOs;
 
-namespace NoraCOND.Application.Dashboard.Interfaces;
+namespace NoraCOND.Application.Interfaces;
 
 /// <summary>
 /// Interface para serviços de dashboard e estatísticas

@@ -1,6 +1,6 @@
 using NoraCOND.Domain.Entities;
 
-namespace NoraCOND.Application.Processos.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface IProcessoRepository
     {

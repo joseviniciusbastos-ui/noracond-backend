@@ -1,8 +1,5 @@
-using NoraCOND.Application.Clientes.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.Dashboard.DTOs;
-using NoraCOND.Application.Dashboard.Interfaces;
-using NoraCOND.Application.Lancamentos.Interfaces;
-using NoraCOND.Application.Processos.Interfaces;
 using NoraCOND.Domain.Enums;
 
 namespace NoraCOND.Application.Dashboard.Services

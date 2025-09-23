@@ -1,7 +1,5 @@
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.Lancamentos.DTOs;
-using NoraCOND.Application.Lancamentos.Interfaces;
-using NoraCOND.Application.Lancamentos.Services;
-using NoraCOND.Application.Processos.Interfaces;
 using NoraCOND.Domain.Entities;
 
 namespace NoraCOND.Application.Lancamentos.Services

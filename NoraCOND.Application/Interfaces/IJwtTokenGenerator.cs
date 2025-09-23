@@ -1,6 +1,4 @@
-using System;
-
-namespace NoraCOND.Application.Common.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface IJwtTokenGenerator
     {

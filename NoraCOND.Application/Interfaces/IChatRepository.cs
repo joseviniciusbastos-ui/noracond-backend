@@ -1,6 +1,6 @@
 using NoraCOND.Domain.Entities;
 
-namespace NoraCOND.Application.Chat.Interfaces;
+namespace NoraCOND.Application.Interfaces;
 
 public interface IChatRepository
 {

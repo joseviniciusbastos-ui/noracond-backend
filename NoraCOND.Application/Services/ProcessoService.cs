@@ -1,5 +1,5 @@
 using NoraCOND.Application.Processos.DTOs;
-using NoraCOND.Application.Processos.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Application.Processos.Services;
 using NoraCOND.Domain.Entities;
 

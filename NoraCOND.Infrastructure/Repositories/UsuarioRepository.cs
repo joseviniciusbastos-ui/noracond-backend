@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using NoraCOND.Application.Usuarios.Interfaces;
+using NoraCOND.Application.Interfaces;
 using NoraCOND.Domain.Entities;
 using NoraCOND.Infrastructure.Data;
 

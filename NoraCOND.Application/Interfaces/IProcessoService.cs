@@ -1,6 +1,6 @@
 using NoraCOND.Application.Processos.DTOs;
 
-namespace NoraCOND.Application.Processos.Services
+namespace NoraCOND.Application.Interfaces
 {
     public interface IProcessoService
     {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NoraCOND.Application.Chat.DTOs;
-using NoraCOND.Application.Chat.Interfaces;
+using NoraCOND.Application.Interfaces;
 using System.Security.Claims;
 
 namespace NoraCOND.API.Controllers;

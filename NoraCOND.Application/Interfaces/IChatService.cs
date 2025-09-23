@@ -1,6 +1,6 @@
 using NoraCOND.Application.Chat.DTOs;
 
-namespace NoraCOND.Application.Chat.Interfaces;
+namespace NoraCOND.Application.Interfaces;
 
 public interface IChatService
 {

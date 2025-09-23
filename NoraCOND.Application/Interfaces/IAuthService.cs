@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using NoraCOND.Domain.Entities;
 
-namespace NoraCOND.Application.Authentication
+namespace NoraCOND.Application.Interfaces
 {
     public interface IAuthService
     {

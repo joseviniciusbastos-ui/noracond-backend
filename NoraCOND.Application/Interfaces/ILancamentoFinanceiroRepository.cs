@@ -1,6 +1,6 @@
 using NoraCOND.Domain.Entities;
 
-namespace NoraCOND.Application.Lancamentos.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface ILancamentoFinanceiroRepository
     {

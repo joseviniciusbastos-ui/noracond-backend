@@ -1,9 +1,6 @@
 using NoraCOND.Application.Clientes.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
-namespace NoraCOND.Application.Clientes.Services
+namespace NoraCOND.Application.Interfaces
 {
     public interface IClienteService
     {

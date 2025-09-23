@@ -1,6 +1,6 @@
 using NoraCOND.Application.Lancamentos.DTOs;
 
-namespace NoraCOND.Application.Lancamentos.Services
+namespace NoraCOND.Application.Interfaces
 {
     public interface ILancamentoFinanceiroService
     {

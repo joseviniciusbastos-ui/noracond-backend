@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace NoraCOND.Application.Clientes.Interfaces
+namespace NoraCOND.Application.Interfaces
 {
     public interface IClienteRepository
     {
