@@ -34,11 +34,11 @@ USER appuser
 COPY --from=publish /app/publish .
 
 # Configurar variáveis de ambiente
-ENV ASPNETCORE_URLS=http://+:5000
+ENV ASPNETCORE_URLS=http://+:8080
 ENV ASPNETCORE_ENVIRONMENT=Production
 
 # Expor porta
-EXPOSE 5000
+EXPOSE 8080
 
 # Comando de inicialização
 ENTRYPOINT ["dotnet", "NoraCOND.API.dll"]

@@ -27,22 +27,15 @@ services:
   api:
     build:
       context: .
-      dockerfile: NoraCOND.API/Dockerfile
+      dockerfile: Dockerfile
     container_name: noracond-api
+    env_file:
+      - ./NoraCOND.API/.env.production
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
       - DB_HOST=postgres
       - DB_PORT=5432
-      - DB_NAME=${DB_NAME:-noracond_db}
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-postgres}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER:-NoraCOND.API}
-      - JWT_AUDIENCE=${JWT_AUDIENCE:-NoraCOND.Client}
-      - JWT_EXPIRATION_MINUTES=${JWT_EXPIRATION_MINUTES:-60}
-      - FILE_UPLOAD_PATH=/app/uploads
     ports:
-      - "5000:5000"
+      - "5000:8080"
     volumes:
       - uploads_data:/app/uploads
     networks:
