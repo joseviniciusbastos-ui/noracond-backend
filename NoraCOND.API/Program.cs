@@ -27,7 +27,16 @@ Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Limpa provedores de configuração padrão
+builder.Configuration.Sources.Clear();
+
+// Adiciona as configurações na ordem correta de prioridade
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+// Adicionar serviços ao contêiner.
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
