@@ -1,29 +1,13 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using NoraCOND.Application.Authentication;
-using NoraCOND.Application.Clientes.Interfaces;
-using NoraCOND.Application.Clientes.Services;
-using NoraCOND.Application.Common.Interfaces;
-using NoraCOND.Application.Processos.Interfaces;
-using NoraCOND.Application.Processos.Services;
-using NoraCOND.Application.Lancamentos.Interfaces;
-using NoraCOND.Application.Lancamentos.Services;
-using NoraCOND.Application.Documentos.Interfaces;
-using NoraCOND.Application.Documentos.Services;
-using NoraCOND.Application.Usuarios.Interfaces;
-using NoraCOND.Application.Chat.Interfaces;
-using NoraCOND.Application.Chat.Services;
-using NoraCOND.Application.Dashboard.Interfaces;
-using NoraCOND.Application.Dashboard.Services;
-using NoraCOND.Infrastructure.Authentication;
+using Microsoft.OpenApi.Models;
+using NoraCOND.Application.Services;
+using NoraCOND.Application.Services.Interfaces;
+using NoraCOND.Domain.Repositories;
 using NoraCOND.Infrastructure.Data;
 using NoraCOND.Infrastructure.Repositories;
-using System.Text;
-using DotNetEnv;
-
-// Carregar variáveis de ambiente do arquivo .env
-Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,88 +20,118 @@ builder.Configuration
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
     .AddEnvironmentVariables();
 
-// Adicionar serviços ao contêiner.
-builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+// --- Adicionar serviços ao contêiner ---
 
-// Entity Framework Configuration
+// Configuração do DbContext com a Connection String do appsettings.json
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// JWT Configuration
-var jwtSettings = builder.Configuration.GetSection("JwtSettings");
-var secretKey = jwtSettings["Secret"] ?? throw new InvalidOperationException("JWT Secret não configurado");
-var key = Encoding.ASCII.GetBytes(secretKey);
+// Injeção de Dependência para Repositórios e Serviços
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
+builder.Services.AddScoped<IClienteService, ClienteService>();
+builder.Services.AddScoped<IProcessoRepository, ProcessoRepository>();
+builder.Services.AddScoped<IProcessoService, ProcessoService>();
+builder.Services.AddScoped<ILancamentoFinanceiroRepository, LancamentoFinanceiroRepository>();
+builder.Services.AddScoped<ILancamentoFinanceiroService, LancamentoFinanceiroService>();
+builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
+builder.Services.AddScoped<IDocumentoService, DocumentoService>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddScoped<IDashboardService, DashboardService>();
 
-builder.Services.AddAuthentication(options =>
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+// Configuração do Swagger para documentação da API e testes com JWT
+builder.Services.AddSwaggerGen(c =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "NoraCOND API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Autorização JWT via header Bearer. Exemplo: \"Bearer {token}\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
+
+// Configuração da Autenticação JWT
+var key = Encoding.ASCII.GetBytes(builder.Configuration["Jwt:Key"]);
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 })
-.AddJwtBearer(options =>
+.AddJwtBearer(x =>
 {
-    options.RequireHttpsMetadata = false;
-    options.SaveToken = true;
-    options.TokenValidationParameters = new TokenValidationParameters
+    x.RequireHttpsMetadata = false;
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(key),
         ValidateIssuer = true,
-        ValidIssuer = jwtSettings["Issuer"],
         ValidateAudience = true,
-        ValidAudience = jwtSettings["Audience"],
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"]
     };
 });
 
-// Dependency Injection
-builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-
-// Cliente Services
-builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-builder.Services.AddScoped<IClienteService, ClienteService>();
-
-// Processo Services
-builder.Services.AddScoped<IProcessoRepository, ProcessoRepository>();
-builder.Services.AddScoped<IProcessoService, ProcessoService>();
-
-// Lançamento Services
-builder.Services.AddScoped<ILancamentoFinanceiroRepository, LancamentoFinanceiroRepository>();
-builder.Services.AddScoped<ILancamentoFinanceiroService, LancamentoFinanceiroService>();
-
-// Documento Services
-builder.Services.AddScoped<IDocumentoRepository, DocumentoRepository>();
-builder.Services.AddScoped<IDocumentoService, DocumentoService>();
-
-// Chat Services
-builder.Services.AddScoped<IChatRepository, ChatRepository>();
-builder.Services.AddScoped<IChatService, ChatService>();
-
-// Dashboard Services
-builder.Services.AddScoped<IDashboardService, DashboardService>();
+// Configuração da Política de CORS para permitir acesso do Frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// --- Configurar o pipeline de requisições HTTP ---
+
+// Ativa o Swagger em ambiente de desenvolvimento
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
 
 // Aplica as migrações do Entity Framework automaticamente ao iniciar
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<NoraCOND.Infrastructure.Data.AppDbContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     dbContext.Database.Migrate();
 }
+
+app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
